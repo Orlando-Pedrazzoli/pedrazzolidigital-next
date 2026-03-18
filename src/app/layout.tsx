@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react'
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Plus_Jakarta_Sans, Geist } from 'next/font/google'
 import { rootMetadata } from '@/lib/seo'
 import { OrganizationJsonLd, ProfessionalServiceJsonLd, WebSiteJsonLd } from '@/components/seo/JsonLd'
 import { ThemeProvider } from '@/contexts/ThemeProvider'
 import { CookieProvider } from '@/contexts/CookieProvider'
 import '@/styles/index.css'
+import { cn } from "@/lib/utils";
 
-const plusJakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-sans', display: 'swap' })
+const geist = Geist({subsets:['latin'],variable:'--font-sans'})
 
 export const metadata = rootMetadata
 
@@ -17,7 +18,7 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${plusJakarta.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang="pt-BR" className={cn("scroll-smooth", "font-sans", geist.variable)} suppressHydrationWarning>
       <head>
         <OrganizationJsonLd />
         <ProfessionalServiceJsonLd />

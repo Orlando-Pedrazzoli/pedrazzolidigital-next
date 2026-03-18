@@ -1,0 +1,72 @@
+'use client'
+import { useState } from 'react'
+import { Shield, Cookie, ChevronDown, X, Settings } from 'lucide-react'
+import { useCookieConsent } from '@/contexts/CookieProvider'
+
+const CATEGORIES = [
+  { key: 'necessary' as const, label: 'Cookies Essenciais', desc: 'Necessários para o funcionamento básico do site. Incluem preferências de tema, sessão e segurança. Não podem ser desativados.', always: true },
+  { key: 'analytics' as const, label: 'Cookies de Análise', desc: 'Ajudam a entender como os visitantes interagem com o site, permitindo melhorar a experiência. Incluem Google Analytics para dados agregados de tráfego.', always: false },
+  { key: 'marketing' as const, label: 'Cookies de Marketing', desc: 'Utilizados para rastrear visitantes em diferentes sites e exibir anúncios relevantes. Incluem pixels de redes sociais e plataformas de publicidade.', always: false },
+]
+
+export default function CookieConsent() {
+  const { showBanner, showPreferences, acceptAll, rejectAll, openPreferences, closePreferences, saveCustom, consent, defaultPrefs } = useCookieConsent()
+  const [prefs, setPrefs] = useState({ necessary: true, analytics: consent?.analytics ?? defaultPrefs.analytics, marketing: consent?.marketing ?? defaultPrefs.marketing })
+
+  if (!showBanner && !showPreferences) return null
+
+  const toggle = (key: string) => { if (key === 'necessary') return; setPrefs(prev => ({ ...prev, [key]: !prev[key as keyof typeof prev] })) }
+
+  return (
+    <>
+      {showBanner && !showPreferences && (
+        <div className="fixed bottom-0 left-0 right-0 z-[9999] p-4 md:p-6 animate-[slideUp_0.4s_ease-out]">
+          <div className="max-w-300 mx-auto bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-[0_-8px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_-8px_40px_rgba(0,0,0,0.4)] px-6 py-4 md:px-8 md:py-5">
+            <div className="flex flex-col lg:flex-row gap-5 items-center">
+              <div className="flex gap-3.5 flex-1 items-center">
+                <div className="w-10 h-10 rounded-xl bg-green-50 dark:bg-green-900/20 flex items-center justify-center shrink-0"><Cookie size={20} className="text-green-600 dark:text-green-400" /></div>
+                <div><p className="text-[13px] text-zinc-600 dark:text-zinc-300 leading-relaxed"><strong className="text-zinc-900 dark:text-zinc-100">Respeitamos sua privacidade.</strong> Utilizamos cookies para melhorar sua experiência e analisar o tráfego. <a href="/privacidade" className="text-green-600 dark:text-green-400 hover:underline no-underline font-medium">Política de Privacidade</a></p></div>
+              </div>
+              <div className="flex gap-2.5 shrink-0">
+                <button onClick={openPreferences} className="px-5 py-2.5 rounded-xl text-[13px] font-semibold border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 bg-transparent hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer flex items-center justify-center gap-1.5"><Settings size={14} /> Personalizar</button>
+                <button onClick={rejectAll} className="px-5 py-2.5 rounded-xl text-[13px] font-semibold border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors cursor-pointer">Recusar Todos</button>
+                <button onClick={acceptAll} className="px-5 py-2.5 rounded-xl text-[13px] font-semibold text-white bg-green-600 hover:bg-green-500 transition-colors cursor-pointer border-none">Aceitar Todos</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showPreferences && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={closePreferences} />
+          <div className="relative bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xl w-full max-w-130 max-h-[90vh] overflow-y-auto animate-[fadeScale_0.3s_ease-out]">
+            <div className="sticky top-0 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 px-7 py-5 flex items-center justify-between z-10">
+              <div className="flex items-center gap-3"><Shield size={20} className="text-green-600 dark:text-green-400" /><h2 className="text-[18px] font-bold text-zinc-900 dark:text-zinc-100">Gerenciar Cookies</h2></div>
+              <button onClick={closePreferences} className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all cursor-pointer bg-transparent border-none" aria-label="Fechar"><X size={18} /></button>
+            </div>
+            <div className="px-7 py-5"><p className="text-[14px] text-zinc-500 dark:text-zinc-400 leading-relaxed">Controlamos os cookies utilizados neste site para garantir sua privacidade. Você pode ativar ou desativar cada categoria abaixo.</p></div>
+            <div className="px-7 space-y-3 pb-4">
+              {CATEGORIES.map(cat => (
+                <div key={cat.key} className="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+                  <div className="flex items-center justify-between px-5 py-4">
+                    <span className="text-[14px] font-semibold text-zinc-900 dark:text-zinc-100">{cat.label}</span>
+                    {cat.always && <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400">Sempre ativo</span>}
+                    {!cat.always && (
+                      <button onClick={() => toggle(cat.key)} className={`relative w-11 h-6 rounded-full transition-colors duration-200 shrink-0 border-none cursor-pointer ${prefs[cat.key] ? 'bg-green-600' : 'bg-zinc-300 dark:bg-zinc-600'}`}>
+                        <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform duration-200 ${prefs[cat.key] ? 'translate-x-5.5' : 'translate-x-0.5'}`} />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="sticky bottom-0 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 px-7 py-5 flex flex-col sm:flex-row gap-3 justify-end">
+              <button onClick={() => saveCustom({ necessary: true, analytics: false, marketing: false })} className="px-5 py-2.5 rounded-xl text-[13px] font-semibold border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 bg-transparent hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer">Recusar Opcionais</button>
+              <button onClick={() => saveCustom(prefs)} className="px-5 py-2.5 rounded-xl text-[13px] font-semibold text-white bg-green-600 hover:bg-green-500 transition-colors cursor-pointer border-none">Salvar Preferências</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}

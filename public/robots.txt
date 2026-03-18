@@ -1,0 +1,6 @@
+# Pedrazzoli Digital — robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://pedrazzolidigital.com/sitemap.xml

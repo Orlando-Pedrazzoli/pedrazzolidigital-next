@@ -1,0 +1,614 @@
+/* src/styles/index.css */
+
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@import '@fontsource-variable/geist';
+
+/* Definição de tokens do tema (cores, fontes, etc.)
+   - Use --color-* para cores → gera utilities como bg-primary, text-primary, etc.
+   - Use oklch() para cores modernas e acessíveis
+*/
+@theme {
+  --color-background: oklch(0.12 0.05 240); /* dark bg */
+  --color-surface: oklch(0.14 0.04 240); /* cards / panels */
+  --color-primary: oklch(0.68 0.15 145); /* verde #16A34A aproximado */
+  --color-primary-dark: oklch(0.58 0.14 145);
+  --color-text: oklch(0.95 0.02 240); /* texto principal claro */
+  --color-text-muted: oklch(0.75 0.02 240);
+  --color-border: oklch(0.2 0.03 240);
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-display: 'Instrument Serif', Georgia, serif;
+}
+
+/* Dark mode via class .dark (toggle manual) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Estilos base (aplicados globalmente) */
+@layer base {
+  :root {
+    @apply bg-[--color-background] text-[--color-text] font-sans;
+  }
+
+  body {
+    @apply min-h-screen antialiased;
+  }
+
+  h1,
+  h2 {
+    @apply font-serif tracking-tight;
+  }
+
+  /* Opcional: melhora legibilidade em links */
+  a {
+    @apply text-[--color-primary] hover:underline;
+  }
+  * {
+    @apply border-zinc-200 dark:border-zinc-800;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Utilitários custom (ex: .card) */
+@utility card {
+  @apply bg-[--color-surface] rounded-xl border border-[--color-border] shadow-lg p-6 transition-all duration-300 hover:shadow-xl;
+}
+
+/* ── Animações custom ── */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes float-delayed {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes pulse-wa {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+  }
+}
+
+/* Infinite horizontal scroll for tech stack */
+@keyframes scroll-x {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+@utility animate-float-delayed {
+  animation: float-delayed 3.5s ease-in-out 0.5s infinite;
+}
+@utility animate-pulse-wa {
+  animation: pulse-wa 2s ease-in-out infinite;
+}
+@utility animate-scroll-x {
+  animation: scroll-x 30s linear infinite;
+}
+
+/* Cookie banner animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes fadeScale {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@theme inline {
+  --font-sans: 'Geist Variable', sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+/* ══════════════════════════════════════════════
+   CSS ADDITIONS FOR SHADCN COMPONENTS
+   ══════════════════════════════════════════════ */
+
+/* shadcn CSS variables — necessárias para os componentes Badge, Card, Button */
+@layer base {
+  :root {
+    --background: oklch(0.97 0.01 240);
+    --foreground: oklch(0.15 0.02 240);
+    --card: oklch(0.97 0.01 240);
+    --card-foreground: oklch(0.15 0.02 240);
+    --primary: oklch(0.68 0.15 145);
+    --primary-foreground: oklch(0.98 0.01 240);
+    --secondary: oklch(0.93 0.02 240);
+    --secondary-foreground: oklch(0.15 0.02 240);
+    --muted: oklch(0.93 0.02 240);
+    --muted-foreground: oklch(0.55 0.02 240);
+    --accent: oklch(0.93 0.02 240);
+    --accent-foreground: oklch(0.15 0.02 240);
+    --destructive: oklch(0.55 0.2 25);
+    --destructive-foreground: oklch(0.98 0.01 240);
+    --border: oklch(0.88 0.02 240);
+    --input: oklch(0.88 0.02 240);
+    --ring: oklch(0.68 0.15 145);
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: oklch(0.12 0.05 240);
+    --foreground: oklch(0.95 0.02 240);
+    --card: oklch(0.14 0.04 240);
+    --card-foreground: oklch(0.95 0.02 240);
+    --primary: oklch(0.68 0.15 145);
+    --primary-foreground: oklch(0.12 0.05 240);
+    --secondary: oklch(0.2 0.03 240);
+    --secondary-foreground: oklch(0.95 0.02 240);
+    --muted: oklch(0.2 0.03 240);
+    --muted-foreground: oklch(0.65 0.02 240);
+    --accent: oklch(0.2 0.03 240);
+    --accent-foreground: oklch(0.95 0.02 240);
+    --destructive: oklch(0.55 0.2 25);
+    --destructive-foreground: oklch(0.98 0.01 240);
+    --border: oklch(0.2 0.03 240);
+    --input: oklch(0.2 0.03 240);
+    --ring: oklch(0.68 0.15 145);
+  }
+}
+/* ══════════════════════════════════════════════
+   ETHEREAL HERO — CSS
+   ══════════════════════════════════════════════ */
+
+.ethereal-hero {
+  position: relative;
+  width: 100%;
+  background: #0a0a0a;
+}
+
+.ethereal-canvas-wrapper {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+  margin-bottom: -100vh;
+}
+
+.ethereal-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Scroll progress */
+.ethereal-progress {
+  position: fixed;
+  top: 50%;
+  right: 2rem;
+  width: 2px;
+  height: 120px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1px;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.ethereal-progress-bar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #22c55e, #4ade80);
+  transform-origin: top;
+  transform: scaleY(0);
+  border-radius: 1px;
+}
+
+/* Sections — CENTRADO como o componente original */
+.ethereal-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.ethereal-section--last {
+  min-height: 60vh;
+  padding-bottom: 6rem;
+}
+
+.ethereal-section-content {
+  text-align: center;
+  max-width: 900px;
+  padding: 0 2rem;
+}
+
+/* Headline — grande e centrado sobre a esfera */
+.ethereal-section .section-headline {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(4.5rem, 12vw, 10rem);
+  font-weight: 400;
+  line-height: 0.92;
+  color: white;
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+/* Subheadline — verde, abaixo do headline */
+.ethereal-section .section-subheadline {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.8rem);
+  font-weight: 300;
+  color: rgba(74, 222, 128, 0.8);
+  margin: 0.6rem 0 0 0;
+  letter-spacing: 0.05em;
+}
+
+/* Body text — centrado com max-width */
+.ethereal-section .section-body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.7;
+  margin: 1.5rem auto 0 auto;
+  max-width: 520px;
+}
+
+/* Loading */
+.ethereal-loading {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition:
+    opacity 0.8s ease,
+    visibility 0.8s ease;
+}
+
+.ethereal-loading.ethereal-loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ethereal-loading-text {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  animation: ethereal-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes ethereal-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+/* ══════════════════════════════════════════════
+   HOLOGRAPHIC CARD — CSS
+   ══════════════════════════════════════════════ */
+
+.holo-card {
+  --x: 50%;
+  --y: 50%;
+  --bg-x: 50%;
+  --bg-y: 50%;
+
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease-out;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  /* Dark glass base */
+  background:
+    radial-gradient(
+      circle at var(--bg-x) var(--bg-y),
+      rgba(34, 197, 94, 0.08) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      rgba(255, 255, 255, 0.01) 100%
+    );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+/* Light mode */
+:root:not(.dark) .holo-card {
+  background:
+    radial-gradient(
+      circle at var(--bg-x) var(--bg-y),
+      rgba(22, 163, 74, 0.06) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.7) 100%
+    );
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.holo-card:hover {
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+:root:not(.dark) .holo-card:hover {
+  border-color: rgba(22, 163, 74, 0.25);
+  box-shadow: 0 8px 32px rgba(22, 163, 74, 0.08);
+}
+
+/* Holographic shimmer overlay */
+.holo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--bg-x) var(--bg-y),
+    rgba(34, 197, 94, 0.12) 0%,
+    rgba(16, 185, 129, 0.06) 25%,
+    rgba(59, 130, 246, 0.04) 50%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.holo-card:hover::before {
+  opacity: 1;
+}
+
+/* Content */
+.holo-content {
+  position: relative;
+  z-index: 2;
+}
+
+.holo-title {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.dark .holo-title {
+  color: #f4f4f5;
+}
+
+:root:not(.dark) .holo-title {
+  color: #18181b;
+}
+
+.holo-card:hover .holo-title {
+  color: #22c55e;
+}
+
+:root:not(.dark) .holo-card:hover .holo-title {
+  color: #16a34a;
+}
+
+.holo-desc {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.dark .holo-desc {
+  color: #a1a1aa;
+}
+
+:root:not(.dark) .holo-desc {
+  color: #52525b;
+}
+
+/* Glow effect on hover */
+.holo-glow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  top: calc(var(--y) - 100px);
+  left: calc(var(--x) - 100px);
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.15) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.holo-card:hover .holo-glow {
+  opacity: 1;
+}
+
+:root:not(.dark) .holo-glow {
+  background: radial-gradient(
+    circle,
+    rgba(22, 163, 74, 0.1) 0%,
+    transparent 70%
+  );
+}
+/* ══════════════════════════════════════════════
+   3D FOLDER — CSS Variables
+   ══════════════════════════════════════════════ */
+
+@theme inline {
+  --color-folder-back: var(--folder-back);
+  --color-folder-front: var(--folder-front);
+  --color-folder-tab: var(--folder-tab);
+}
+
+:root {
+  --folder-back: oklch(0.65 0.12 145);
+  --folder-front: oklch(0.7 0.14 150);
+  --folder-tab: oklch(0.6 0.1 140);
+}
+
+.dark {
+  --folder-back: oklch(0.55 0.12 145);
+  --folder-front: oklch(0.6 0.14 150);
+  --folder-tab: oklch(0.5 0.1 140);
+}
